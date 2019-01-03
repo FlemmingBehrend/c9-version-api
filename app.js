@@ -1,18 +1,19 @@
-var express = require('express');
-var app = express();
+const express = require("express");
+const bodyParser = require("body-parser");
+const expressGraphQL = require("express-graphql");
+const graphqlSchema = require("./schema/index");
 
-app.get('/', function(req, res) {
-  res.send({
-    "Output": "Hello World!"
-  });
-});
+const app = express();
 
-app.post('/', function(req, res) {
-  res.send({
-    "Output": "Hello World!"
-  });
-});
+app.use(bodyParser.json());
 
+app.use(
+  "/graphql",
+  expressGraphQL({
+    schema: graphqlSchema,
+    graphiql: true
+  })
+);
 
 // Export your Express configuration so that it can be consumed by the Lambda handler
-module.exports = app
+module.exports = app;
